@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#8d000000"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="@dimen/text_margin"
+            android:src="@drawable/ic_user_black"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@Fulano"
+            android:layout_toEndOf="@id/user_image"
+            android:layout_alignStart="@+id/content_tweet"/>
+
+        <TextView
+            android:id="@+id/data_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_image"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="16/01/1998" />
+
+        <TextView
+            android:id="@+id/content_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:layout_toEndOf="@id/user_image"
+            android:text="@string/lorem_ipsum"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/content_tweet"
+            android:layout_below="@id/content_tweet">
+
+            <ImageView
+                android:id="@+id/favorite_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingEnd="10dp"
+                android:paddingStart="25dp"
+                android:src="@drawable/baseline_favorite_24" />
+
+            <TextView
+                android:id="@+id/favorite_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/favorite_icon"
+                android:text="99999" />
+
+            <ImageView
+                android:id="@+id/retweet_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/favorite_text"
+                android:paddingEnd="10dp"
+                android:paddingStart="25dp"
+                android:src="@drawable/baseline_repeat_24" />
+
+            <TextView
+                android:id="@+id/retweet_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/retweet_icon"
+                android:text="99999" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
