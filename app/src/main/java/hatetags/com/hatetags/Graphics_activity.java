@@ -24,6 +24,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -38,6 +39,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 import hatetags.com.hatetags.Graphics.MyXAxisValueFormatter;
 import hatetags.com.hatetags.Graphics.MyYAxisValueFormatter;
 
@@ -53,22 +55,22 @@ public class Graphics_activity extends AppCompatActivity {
     protected BarChart chartBar;
 
     @BindView(R.id.fab_barChart)
-    protected FloatingActionButton fab_barChart;
+    protected com.github.clans.fab.FloatingActionButton fab_barChart;
 
     @BindView(R.id.fab_lineChart)
-    protected FloatingActionButton fab_lineChart;
+    protected com.github.clans.fab.FloatingActionButton fab_lineChart;
 
     @BindView(R.id.fab_pieChart)
-    protected FloatingActionButton fab_pieChart;
+    protected com.github.clans.fab.FloatingActionButton fab_pieChart;
 
     @BindView(R.id.fab_graphics)
-    protected FloatingActionButton fab;
+    protected com.github.clans.fab.FloatingActionMenu fab;
 
-    private boolean isFabOpen = false;
+    private ArrayList<BarEntry> data;
 
-    private Animation fabOpenAnimation;
+    private ArrayList<String> labels;
 
-    private Animation fabCloseAnimation;
+    private BarDataSet dataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,67 +79,37 @@ public class Graphics_activity extends AppCompatActivity {
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN);   //Deixa a tela em Full Screen
         setContentView(R.layout.activity_graphics_activity);
         ButterKnife.bind(this);
-        getAnimations();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Gráficos");
 
-//        ArrayList<Entry> data =  new ArrayList<>();
-//        data.add(new Entry(1,10));
-//        data.add(new Entry(2,75));
-//        data.add(new Entry(3,50));
-//        data.add(new Entry(3,100));
-//        data.add(new Entry(4,200));
 
-//        Entrada para Linechart
+        data =  new ArrayList<>();
+        data.add(new BarEntry(1,10));
+        data.add(new BarEntry(2,75));
+        data.add(new BarEntry(3,50));
+        data.add(new BarEntry(3,100));
+        data.add(new BarEntry(4,200));
+
+        dataSet = new BarDataSet(data,"Gráfico");
+
+        labels = new ArrayList<>();
+        labels.add("Label 1");
+        labels.add("Label 2");
+        labels.add("Label 3");
+        labels.add("Label 4");
+        labels.add("Label 5");
+
+
 
         chartLine.setVisibility(View.GONE);
 
-    }
 
-    @OnClick(R.id.fab_graphics)
-    public void fab(){
-
-        if (isFabOpen){
-            closeFabMenu();
-        }
-        else{
-            showFabMenu();
-        }
-//        ArrayList<BarEntry> data =  new ArrayList<>();
-//        data.add(new BarEntry(1,10));
-//        data.add(new BarEntry(2,75));
-//        data.add(new BarEntry(3,50));
-//        data.add(new BarEntry(3,100));
-//        data.add(new BarEntry(4,200));
-//
-//        ArrayList<String> labels = new ArrayList<>();
-//        labels.add("Label 1");
-//        labels.add("Label 2");
-//        labels.add("Label 3");
-//        labels.add("Label 4");
-//        labels.add("Label 5");
-//
-//        showBarChart(new BarDataSet(data,"Teste"),labels);
 
     }
 
-    private void showFabMenu(){
-
-        isFabOpen = true;
-        ViewCompat.animate(fab).rotation(45.0F).withLayer().setDuration(300).setInterpolator(new OvershootInterpolator(10.0F)).start();
-    }
-
-    private void closeFabMenu(){
-
-        isFabOpen = false;
-        fab_barChart.animate().translationY(0);
-        fab_lineChart.animate().translationY(0);
-        fab_pieChart.animate().translationY(0);
-
-    }
-
+//    @OnClick(R.id.fab_lineChart)
     public void showLineChart(LineDataSet data, ArrayList<String> labels){
 
         XAxis xAxis = chartLine.getXAxis();
@@ -178,7 +150,28 @@ public class Graphics_activity extends AppCompatActivity {
 
     }
 
-    public void showBarChart(BarDataSet data, ArrayList<String> labels) {
+    @OnClick(R.id.chartBar)
+    public void clickChartBar(){
+
+        System.out.println("ENTROU AQUIIIII");
+        if(hideFab()){
+            fab.setVisibility(View.INVISIBLE);
+        }
+        else {
+            fab.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @OnTouch(R.id.chartBar)
+    public boolean hideFab(){
+
+        System.out.println("Ta no Touch");
+        return true;
+    }
+
+    @OnClick(R.id.fab_barChart)
+    public void showBarChart() {
 
         //Define o eixo X
         XAxis xAxis = chartBar.getXAxis();
@@ -195,9 +188,9 @@ public class Graphics_activity extends AppCompatActivity {
         yAxis.setAxisMinimum(0f);
         yAxis.setValueFormatter(new MyYAxisValueFormatter());
 
-        data.setBarBorderColor(Color.BLACK);
-        data.setDrawValues(false);
-        BarData barData = new BarData(data);
+        dataSet.setBarBorderColor(Color.BLACK);
+        dataSet.setDrawValues(false);
+        BarData barData = new BarData(dataSet);
         chartBar.setData(barData);
         // Desativa o ZOOM do Touch
         chartBar.setDoubleTapToZoomEnabled(false);
@@ -216,8 +209,9 @@ public class Graphics_activity extends AppCompatActivity {
         });
 
         // Efeito de animação
-        chartLine.animateXY(2000, 2000);
-        chartLine.invalidate();
+        chartBar.animateXY(2000, 2000);
+        chartBar.invalidate();
+        chartBar.setVisibility(View.VISIBLE);
 
 
     }
@@ -240,12 +234,6 @@ public class Graphics_activity extends AppCompatActivity {
 
         return result;
 
-    }
-
-    private void getAnimations(){
-
-        fabOpenAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_open);
-        fabCloseAnimation = AnimationUtils.loadAnimation(this, R.anim.fab_close);
     }
 
 }

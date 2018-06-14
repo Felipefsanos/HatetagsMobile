@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context=".Graphics_activity">
 
     <include
@@ -20,58 +20,74 @@
         app:layout_constraintTop_toBottomOf="@+id/includeToobar"
         android:padding="20dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_lineChart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:padding="20dp"
-            android:src="@drawable/baseline_show_chart_white_36"
-            app:fabSize="normal"
-            app:rippleColor="@color/colorPrimary" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_barChart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:padding="20dp"
-            android:src="@drawable/outline_equalizer_white_36"
-            app:fabSize="normal"
-            app:rippleColor="@color/colorPrimary" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_pieChart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:padding="20dp"
-            android:src="@drawable/baseline_pie_chart_white_36"
-            app:fabSize="normal"
-            app:rippleColor="@color/colorPrimary" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_graphics"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:src="@drawable/outline_equalizer_white_36"
-            app:fabSize="normal"
-            app:rippleColor="@color/colorPrimary" />
-
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chartLine"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/chartBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartPie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_graphics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/outline_equalizer_white_36"
+            app:fabSize="normal"
+            app:menu_colorNormal="@color/colorPrimary"
+            app:menu_colorPressed="#095b7f"
+            app:menu_colorRipple="@color/colorPrimary">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_pieChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:src="@drawable/baseline_pie_chart_white_36"
+                app:fabSize="normal"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="#095b7f"
+                app:fab_colorRipple="@color/colorPrimary"
+                fab:menu_buttonSpacing="20dp"
+                />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_barChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:src="@drawable/outline_equalizer_white_36"
+                app:fabSize="normal"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="#095b7f"
+                app:fab_colorRipple="@color/colorPrimary"
+                />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_lineChart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="20dp"
+                android:src="@drawable/baseline_show_chart_white_36"
+                app:fabSize="normal"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="#095b7f"
+                app:fab_colorRipple="@color/colorPrimary"
+                />
+
+        </com.github.clans.fab.FloatingActionMenu>
 
     </FrameLayout>
 
