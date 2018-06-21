@@ -32,12 +32,6 @@
             android:layout_height="match_parent"
             android:visibility="gone"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chartPie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
-
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/fab_graphics"
             android:layout_width="wrap_content"

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -28,6 +29,8 @@ import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -40,6 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import hatetags.com.hatetags.Graphics.GraphicFactory;
 import hatetags.com.hatetags.Graphics.MyXAxisValueFormatter;
 import hatetags.com.hatetags.Graphics.MyYAxisValueFormatter;
 
@@ -66,11 +70,11 @@ public class Graphics_activity extends AppCompatActivity {
     @BindView(R.id.fab_graphics)
     protected com.github.clans.fab.FloatingActionMenu fab;
 
-    private ArrayList<BarEntry> data;
+    private ArrayList<Entry> data;
 
-    private ArrayList<String> labels;
+    private String[] labels;
 
-    private BarDataSet dataSet;
+    private GraphicFactory graphicFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,36 +88,29 @@ public class Graphics_activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Gráficos");
 
+        graphicFactory = new GraphicFactory();
 
-        data =  new ArrayList<>();
-        data.add(new BarEntry(1,10));
-        data.add(new BarEntry(2,75));
-        data.add(new BarEntry(3,50));
-        data.add(new BarEntry(3,100));
-        data.add(new BarEntry(4,200));
+        ArrayList<String> Testelabels = new ArrayList<>();
+        Testelabels.add("Label 1");
+        Testelabels.add("Label 2");
+        Testelabels.add("Label 3");
+        Testelabels.add("Label 4");
+        Testelabels.add("Label 5");
 
-        dataSet = new BarDataSet(data,"Gráfico");
-
-        labels = new ArrayList<>();
-        labels.add("Label 1");
-        labels.add("Label 2");
-        labels.add("Label 3");
-        labels.add("Label 4");
-        labels.add("Label 5");
-
-
-
-        chartLine.setVisibility(View.GONE);
+        setData(data);
+        setLabels(Testelabels);
 
 
 
     }
 
-//    @OnClick(R.id.fab_lineChart)
-    public void showLineChart(LineDataSet data, ArrayList<String> labels){
+    @OnClick(R.id.fab_lineChart)
+    public void showLineChart(){
+
+        LineDataSet lineDataSet = (LineDataSet) graphicFactory.prepararDataSet(chartLine, data, "Teste");
 
         XAxis xAxis = chartLine.getXAxis();
-        xAxis.setValueFormatter(new MyXAxisValueFormatter(setLabels(labels)));
+        xAxis.setValueFormatter(new MyXAxisValueFormatter(labels));
 
         // Evita a duplicação dos meses na linha X
         xAxis.setGranularity(1f);
@@ -121,9 +118,9 @@ public class Graphics_activity extends AppCompatActivity {
         YAxis yAxis = chartLine.getAxisLeft();
         yAxis.setValueFormatter(new MyYAxisValueFormatter());
 
-        data.setDrawFilled(true);
-        data.setDrawValues(false);
-        LineData lineData = new LineData(data);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setDrawValues(false);
+        LineData lineData = new LineData(lineDataSet);
         chartLine.setData(lineData);
         // Desativa o ZOOM do Touch
         chartLine.setDoubleTapToZoomEnabled(false);
@@ -148,30 +145,15 @@ public class Graphics_activity extends AppCompatActivity {
         chartLine.animateXY(2000, 2000);
         chartLine.invalidate();
 
-    }
+        chartLine.setVisibility(View.VISIBLE);
+        chartBar.setVisibility(View.GONE);
 
-    @OnClick(R.id.chartBar)
-    public void clickChartBar(){
-
-        System.out.println("ENTROU AQUIIIII");
-        if(hideFab()){
-            fab.setVisibility(View.INVISIBLE);
-        }
-        else {
-            fab.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    @OnTouch(R.id.chartBar)
-    public boolean hideFab(){
-
-        System.out.println("Ta no Touch");
-        return true;
     }
 
     @OnClick(R.id.fab_barChart)
     public void showBarChart() {
+
+        BarDataSet barDataSet = (BarDataSet) graphicFactory.prepararDataSet(chartBar, data, "Teste");
 
         //Define o eixo X
         XAxis xAxis = chartBar.getXAxis();
@@ -179,7 +161,7 @@ public class Graphics_activity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f);
 //        xAxis.setLabelCount(7);     Define quantos labels aparece
-        xAxis.setValueFormatter(new MyXAxisValueFormatter(setLabels(labels)));
+        xAxis.setValueFormatter(new MyXAxisValueFormatter(labels));
 
         //Define o eixo Y
         YAxis yAxis = chartBar.getAxisLeft();
@@ -188,9 +170,9 @@ public class Graphics_activity extends AppCompatActivity {
         yAxis.setAxisMinimum(0f);
         yAxis.setValueFormatter(new MyYAxisValueFormatter());
 
-        dataSet.setBarBorderColor(Color.BLACK);
-        dataSet.setDrawValues(false);
-        BarData barData = new BarData(dataSet);
+        barDataSet.setBarBorderColor(Color.BLACK);
+        barDataSet.setDrawValues(false);
+        BarData barData = new BarData(barDataSet);
         chartBar.setData(barData);
         // Desativa o ZOOM do Touch
         chartBar.setDoubleTapToZoomEnabled(false);
@@ -211,28 +193,39 @@ public class Graphics_activity extends AppCompatActivity {
         // Efeito de animação
         chartBar.animateXY(2000, 2000);
         chartBar.invalidate();
+
         chartBar.setVisibility(View.VISIBLE);
+        chartLine.setVisibility(View.GONE);
 
 
     }
 
-    public String[] setLabels(ArrayList<String> labels){
+    private void setData(ArrayList<Entry> data){
 
-        String result[] = new String[labels.size()+1];
+        this.data =  new ArrayList<>();
+        this.data.add(new Entry(1,10));
+        this.data.add(new Entry(2,75));
+        this.data.add(new Entry(3,50));
+        this.data.add(new Entry(3,100));
+        this.data.add(new Entry(4,200));
 
-        for (int i=0; i < result.length; i++){
+    }
+
+    private void setLabels(ArrayList<String> newLabels){
+
+       labels = new String[newLabels.size()+1];
+
+        for (int i=0; i < labels.length; i++){
 
             if (i == 0){
 
-                result[i] = "";
+                labels[i] = "";
             }
             else
             {
-                result[i] = labels.get(i-1);
+                labels[i] = newLabels.get(i-1);
             }
         }
-
-        return result;
 
     }
 

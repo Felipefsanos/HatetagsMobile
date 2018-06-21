@@ -7,9 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,8 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hatetags.com.hatetags.Entitys.Tweet;
 import hatetags.com.hatetags.RecycleViewHome.MyAdapter;
+import hatetags.com.hatetags.WebServices.ClienteWebService;
 
-public class MainActivity extends AppCompatActivity implements OnRecyclerViewListener {
+public class MainActivity extends AppCompatActivity implements AbsListView.OnScrollListener {
 
     @BindView(R.id.myToolbar)
     public Toolbar toolbar;
@@ -26,7 +31,13 @@ public class MainActivity extends AppCompatActivity implements OnRecyclerViewLis
     @BindView(R.id.recycleView)
     public RecyclerView recyclerView;
 
-    private List<Tweet> listTweets;
+    public List<Tweet> listTweets;
+
+    private Gson gson;
+
+    private ClienteWebService WS;
+
+    private MyAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,46 +47,56 @@ public class MainActivity extends AppCompatActivity implements OnRecyclerViewLis
         toolbar.setNavigationIcon(R.drawable.ic_home);
         setSupportActionBar(toolbar); //Seta ela como minha Action Bar
 
-        //Lista de Tweets a ser exibida
+        gson =  new Gson();
+        WS = new ClienteWebService(0);
 
-//        ArrayList<Tweet> tweets = new ArrayList<>();
+        searchTweets();
+        setDataToRecycleView();
+    }
 
-        listTweets = new ArrayList<>();
-        Tweet T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
-        T = new Tweet("@Ciclano","12/12/12","kkkkkkkkk","123","321");
-        listTweets.add(T);
+    public void searchTweets(){
 
+        String retorno;
+
+        try {
+
+            retorno = WS.execute().get();
+            Type collectionType = new TypeToken<List<Tweet>>() {}.getType();
+
+            listTweets = gson.fromJson(retorno, collectionType);
+
+            WS.setLastId(this.searchLastId());
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void setDataToRecycleView(){
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setOnScrollChangeListener((View.OnScrollChangeListener) MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new MyAdapter(listTweets, this));
+        if (adapter == null) {
+            MyAdapter adapter = new MyAdapter(listTweets, this);
+            recyclerView.setAdapter(adapter);
+        }
+        else{
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public long searchLastId(){
+
+        long lastId = 0;
+
+        for (Tweet t:listTweets) {
+            if (t.getId() > lastId){
+                lastId = t.getId();
+            }
+        }
+        return lastId;
+
     }
 
     @OnClick(R.id.fab)
@@ -84,10 +105,17 @@ public class MainActivity extends AppCompatActivity implements OnRecyclerViewLis
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        if (view.getId() == recyclerView.getId()){
+            if (recyclerView.getScrollState() + 1 == listTweets.size()) {
+                this.searchTweets();
+            }
+        }
     }
 
     @Override
-    public void onLongItemClick(View view, int position) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
     }
 }

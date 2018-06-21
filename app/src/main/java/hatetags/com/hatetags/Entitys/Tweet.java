@@ -1,58 +1,106 @@
 package hatetags.com.hatetags.Entitys;
 
+import java.util.Date;
+
 public class Tweet {
 
-    private String tagUser;
-    private String dataHora;
-    private String content;
-    private String favorites;
-    private String retweets;
+    private Long id;
 
-    public Tweet(String tagUser, String dataHora, String content, String favorites, String retweets) {
-        this.tagUser = tagUser;
-        this.dataHora = dataHora;
-        this.content = content;
-        this.favorites = favorites;
-        this.retweets = retweets;
+    private Long idUsuario;
+
+    private Long idTweet;
+
+    private String dsTweet;
+
+    private Date dhTweet;
+
+    private Long qtFavoritos;
+
+    private Long qtRetweets;
+
+    private int snRetweet;
+
+    private String nmLocal;
+
+    private String nmPais;
+
+    public Long getId() {
+        return id;
     }
 
-    public String getTagUser() {
-        return tagUser;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTagUser(String tagUser) {
-        this.tagUser = tagUser;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public String getDataHora() {
-        return dataHora;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public void setDataHora(String dataHora) {
-        this.dataHora = dataHora;
+    public Long getIdTweet() {
+        return idTweet;
     }
 
-    public String getContent() {
-        return content;
+    public void setIdTweet(Long idTweet) {
+        this.idTweet = idTweet;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public String getDsTweet() {
+        return dsTweet;
     }
 
-    public String getFavorites() {
-        return favorites;
+    public void setDsTweet(String dsTweet) {
+        this.dsTweet = dsTweet;
     }
 
-    public void setFavorites(String favorites) {
-        this.favorites = favorites;
+    public Date getDhTweet() {
+        return dhTweet;
     }
 
-    public String getRetweets() {
-        return retweets;
+    public void setDhTweet(Date dhTweet) {
+        this.dhTweet = dhTweet;
     }
 
-    public void setRetweets(String retweets) {
-        this.retweets = retweets;
+    public Long getQtFavoritos() {
+        return qtFavoritos;
+    }
+
+    public void setQtFavoritos(Long qtFavoritos) {
+        this.qtFavoritos = qtFavoritos;
+    }
+
+    public Long getQtRetweets() {
+        return qtRetweets;
+    }
+
+    public void setQtRetweets(Long qtRetweets) {
+        this.qtRetweets = qtRetweets;
+    }
+
+    public int getSnRetweet() {
+        return snRetweet;
+    }
+
+    public void setSnRetweet(int snRetweet) {
+        this.snRetweet = snRetweet;
+    }
+
+    public String getNmLocal() {
+        return nmLocal;
+    }
+
+    public void setNmLocal(String nmLocal) {
+        this.nmLocal = nmLocal;
+    }
+
+    public String getNmPais() {
+        return nmPais;
+    }
+
+    public void setNmPais(String nmPais) {
+        this.nmPais = nmPais;
     }
 }
