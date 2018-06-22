@@ -1,28 +1,32 @@
 package hatetags.com.hatetags.Entitys;
 
+
 import java.util.Date;
+
 
 public class Tweet {
 
     private Long id;
 
-    private Long idUsuario;
-
     private Long idTweet;
 
-    private String dsTweet;
+    private String name;
 
-    private Date dhTweet;
+    private String text;
 
-    private Long qtFavoritos;
+    private String language;
 
-    private Long qtRetweets;
+    private Date data;
 
-    private int snRetweet;
+    private String image;
 
-    private String nmLocal;
+    private String link;
 
-    private String nmPais;
+    private Long favorites;
+
+    private Long retweets;
+
+    private Double sentiment;
 
     public Long getId() {
         return id;
@@ -30,14 +34,6 @@ public class Tweet {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public Long getIdTweet() {
@@ -48,59 +44,75 @@ public class Tweet {
         this.idTweet = idTweet;
     }
 
-    public String getDsTweet() {
-        return dsTweet;
+    public String getName() {
+        return name;
     }
 
-    public void setDsTweet(String dsTweet) {
-        this.dsTweet = dsTweet;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getDhTweet() {
-        return dhTweet;
+    public String getText() {
+        return text;
     }
 
-    public void setDhTweet(Date dhTweet) {
-        this.dhTweet = dhTweet;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public Long getQtFavoritos() {
-        return qtFavoritos;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setQtFavoritos(Long qtFavoritos) {
-        this.qtFavoritos = qtFavoritos;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
-    public Long getQtRetweets() {
-        return qtRetweets;
+    public Date getData() {
+        return data;
     }
 
-    public void setQtRetweets(Long qtRetweets) {
-        this.qtRetweets = qtRetweets;
+    public void setData(Date data) {
+        this.data = data;
     }
 
-    public int getSnRetweet() {
-        return snRetweet;
+    public String getImage() {
+        return image;
     }
 
-    public void setSnRetweet(int snRetweet) {
-        this.snRetweet = snRetweet;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getNmLocal() {
-        return nmLocal;
+    public String getLink() {
+        return link;
     }
 
-    public void setNmLocal(String nmLocal) {
-        this.nmLocal = nmLocal;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public String getNmPais() {
-        return nmPais;
+    public Long getFavorites() {
+        return favorites;
     }
 
-    public void setNmPais(String nmPais) {
-        this.nmPais = nmPais;
+    public void setFavorites(Long favorites) {
+        this.favorites = favorites;
+    }
+
+    public Long getRetweets() {
+        return retweets;
+    }
+
+    public void setRetweets(Long retweets) {
+        this.retweets = retweets;
+    }
+
+    public Double getSentiment() {
+        return sentiment;
+    }
+
+    public void setSentiment(Double sentiment) {
+        this.sentiment = sentiment;
     }
 }

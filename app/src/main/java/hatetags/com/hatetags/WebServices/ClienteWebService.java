@@ -26,7 +26,7 @@ public class ClienteWebService extends AsyncTask<Void, Void, String> {
 
         try {
 
-            URL url = new URL("http://192.168.15.3:8080/hatetags/tweets/limited/"+lastId);
+            URL url = new URL("http://192.168.15.4:8080/hatetags/tweets/limited/"+lastId);
 
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 

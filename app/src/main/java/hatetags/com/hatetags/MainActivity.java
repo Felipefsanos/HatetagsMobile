@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,16 +15,18 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hatetags.com.hatetags.Entitys.Tweet;
+import hatetags.com.hatetags.RecycleViewHome.EndlessRecyclerViewScrollListener;
 import hatetags.com.hatetags.RecycleViewHome.MyAdapter;
 import hatetags.com.hatetags.WebServices.ClienteWebService;
 
-public class MainActivity extends AppCompatActivity implements AbsListView.OnScrollListener {
+public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.myToolbar)
     public Toolbar toolbar;
@@ -37,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements AbsListView.OnScr
 
     private ClienteWebService WS;
 
-    private MyAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,47 +51,66 @@ public class MainActivity extends AppCompatActivity implements AbsListView.OnScr
         gson =  new Gson();
         WS = new ClienteWebService(0);
 
-        searchTweets();
+
+
+        listTweets = searchTweets();
         setDataToRecycleView();
     }
 
-    public void searchTweets(){
+    public List<Tweet> searchTweets(){
 
         String retorno;
 
         try {
 
             retorno = WS.execute().get();
-            Type collectionType = new TypeToken<List<Tweet>>() {}.getType();
 
-            listTweets = gson.fromJson(retorno, collectionType);
+            Type type = new TypeToken<List<Tweet>>(){}.getType();
 
-            WS.setLastId(this.searchLastId());
+            List<Tweet> Tweetlist = gson.fromJson(retorno, type);
+
+            WS.setLastId(this.searchLastId(Tweetlist));
+
+            return Tweetlist;
 
         }catch (Exception ex){
             ex.printStackTrace();
+            return null;
         }
     }
 
     public void setDataToRecycleView(){
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        recyclerView.setOnScrollChangeListener((View.OnScrollChangeListener) MainActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
-        if (adapter == null) {
-            MyAdapter adapter = new MyAdapter(listTweets, this);
-            recyclerView.setAdapter(adapter);
-        }
-        else{
-            adapter.notifyDataSetChanged();
-        }
+        final MyAdapter adapter = new MyAdapter(listTweets, this);
+        recyclerView.setAdapter(adapter);
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                final int size = adapter.getItemCount();
+                listTweets.addAll(searchTweets());
+
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyItemRangeInserted(size, listTweets.size() - 1);
+                    }
+                });
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
+
+
     }
 
-    public long searchLastId(){
+    public long searchLastId(List<Tweet> list){
 
         long lastId = 0;
 
-        for (Tweet t:listTweets) {
+        for (Tweet t:list) {
             if (t.getId() > lastId){
                 lastId = t.getId();
             }
@@ -104,18 +124,4 @@ public class MainActivity extends AppCompatActivity implements AbsListView.OnScr
         startActivity(new Intent(MainActivity.this, Graphics_activity.class));
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-        if (view.getId() == recyclerView.getId()){
-            if (recyclerView.getScrollState() + 1 == listTweets.size()) {
-                this.searchTweets();
-            }
-        }
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
 }

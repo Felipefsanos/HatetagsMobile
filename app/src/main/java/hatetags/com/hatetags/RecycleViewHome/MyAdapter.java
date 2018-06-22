@@ -1,5 +1,6 @@
 package hatetags.com.hatetags.RecycleViewHome;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -27,15 +28,16 @@ public class MyAdapter extends Adapter<MyHolder> {
         return new MyHolder(LayoutInflater.from(context).inflate(R.layout.fragment_item,parent,false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         Tweet tweet = itens.get(position);
-        holder.userTag.setText(tweet.getIdUsuario().toString());
+        holder.userTag.setText(tweet.getName());
         holder.userImage.setImageResource(R.drawable.ic_user_black);
-        holder.dataHora.setText(tweet.getDhTweet().toString());
-        holder.content.setText(tweet.getDsTweet());
-        holder.favorite.setText(tweet.getQtFavoritos().toString());
-        holder.retweet.setText(tweet.getQtRetweets().toString());
+        holder.dataHora.setText(tweet.getData().toString());
+        holder.content.setText(tweet.getText());
+        holder.favorite.setText(tweet.getFavorites().toString());
+        holder.retweet.setText(tweet.getRetweets().toString());
     }
 
     @Override
