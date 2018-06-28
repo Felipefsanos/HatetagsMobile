@@ -8,25 +8,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
 
 import javax.xml.transform.Result;
 
-public class ClienteWebService extends AsyncTask<Void, Void, String> {
+public class ClienteWebServiceWords extends AsyncTask<Void, Void, String> {
 
-    private long lastId;
-
-    public ClienteWebService(long lastId) {
-        this.lastId = lastId;
-    }
-
+    public ClienteWebServiceWords(){}
     @Override
     protected String doInBackground(Void... params) {
         // Esta etapa é usada para executar a tarefa em background ou fazer a chamada para o webservice
 
         try {
 
-            URL url = new URL("http://10.214.177.97:8080/hatetags/tweets/limited/"+lastId);
+            URL url = new URL("http://10.214.177.97:8080/hatetags/tweets/trendingwords");
 
             HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
 

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Gson gson;
 
-    private ClienteWebService WS;
+    private long lastId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_home);
         setSupportActionBar(toolbar); //Seta ela como minha Action Bar
 
+        lastId = 0;
+
         gson =  new Gson();
-        WS = new ClienteWebService(0);
-
-
 
         listTweets = searchTweets();
         setDataToRecycleView();
@@ -63,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            retorno = WS.execute().get();
+            retorno = new ClienteWebService(lastId).execute().get();
 
             Type type = new TypeToken<List<Tweet>>(){}.getType();
 
             List<Tweet> Tweetlist = gson.fromJson(retorno, type);
 
-            WS.setLastId(this.searchLastId(Tweetlist));
+            setLastId(Tweetlist);
 
             return Tweetlist;
 
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public long searchLastId(List<Tweet> list){
+    public void setLastId(List<Tweet> list){
 
         long lastId = 0;
 
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 lastId = t.getId();
             }
         }
-        return lastId;
+         this.lastId = lastId;
 
     }
 

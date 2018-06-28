@@ -4,4 +4,5 @@
     <dimen name="padrao_55">65dp</dimen>
     <dimen name="padrao_105">120dp</dimen>
     <dimen name="padrao_155">170dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

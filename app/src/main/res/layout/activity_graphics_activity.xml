@@ -24,7 +24,7 @@
             android:id="@+id/chartLine"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/chartBar"
@@ -43,18 +43,18 @@
             app:menu_colorPressed="#095b7f"
             app:menu_colorRipple="@color/colorPrimary">
 
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/fab_pieChart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="20dp"
-                android:src="@drawable/baseline_pie_chart_white_36"
-                app:fabSize="normal"
-                app:fab_colorNormal="@color/colorPrimary"
-                app:fab_colorPressed="#095b7f"
-                app:fab_colorRipple="@color/colorPrimary"
-                fab:menu_buttonSpacing="20dp"
-                />
+            <!--<com.github.clans.fab.FloatingActionButton-->
+                <!--android:id="@+id/fab_pieChart"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="20dp"-->
+                <!--android:src="@drawable/baseline_pie_chart_white_36"-->
+                <!--app:fabSize="normal"-->
+                <!--app:fab_colorNormal="@color/colorPrimary"-->
+                <!--app:fab_colorPressed="#095b7f"-->
+                <!--app:fab_colorRipple="@color/colorPrimary"-->
+                <!--fab:menu_buttonSpacing="20dp"-->
+                <!--/>-->
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fab_barChart"

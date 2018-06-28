@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import hatetags.com.hatetags.Entitys.Tweet;
@@ -32,9 +34,11 @@ public class MyAdapter extends Adapter<MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         Tweet tweet = itens.get(position);
-        holder.userTag.setText(tweet.getName());
+        holder.userTag.setText("@"+tweet.getName());
         holder.userImage.setImageResource(R.drawable.ic_user_black);
-        holder.dataHora.setText(tweet.getData().toString());
+        if(holder.dataHora != null){
+            holder.dataHora.setText(formatDate(tweet.getData()));
+        }
         holder.content.setText(tweet.getText());
         holder.favorite.setText(tweet.getFavorites().toString());
         holder.retweet.setText(tweet.getRetweets().toString());
@@ -44,4 +48,12 @@ public class MyAdapter extends Adapter<MyHolder> {
     public int getItemCount() {
         return itens.size();
     }
+
+    private String formatDate(Date data){
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        return format.format(data);
+    }
+
 }

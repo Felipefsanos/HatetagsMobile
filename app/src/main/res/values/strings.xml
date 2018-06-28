@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">HateTags</string>
     <string name="lorem_ipsum">Lorem ipsum tincidunt aliquet nunc rutrum non, velit curabitur ullamcorper laoreet sollicitudin maecenas vivamus, cras ipsum class nunc cras. consectetur placerat felis torquent aenean ligula eu class aliquam, nullam conubia magna class suspendisse porttitor netus libero augue, eu cras praesent duis nisl ornare lectus. dolor lito</string>
+    <string name="Item_menu_1">Mudar dados</string>
+    <string name="Item_menu_2">Sobre</string>
+    <string name="title_activity_about">About</string>
+    <string name="string_ok">OK</string>
+    <string name="quem_somos">Quem Somos?</string>
+    <string name="descricao_about">Somos aluno de Ciência da computação do Centro Universitário de Belo Horizonte - UNIBH. Desenvolvemos este estudo sobre “Discurso de ódio” a partir do fato da crescente importância deste assunto no Brasil. Por meio de um modelo de filtros, selecionamos palavras e verbos relacionados a uma amostra grupos que são alvos de ódio, e a partir disto desenvolvendo estatísticas importantes para nosso estudo.</string>
 </resources>

@@ -2,50 +2,44 @@ package hatetags.com.hatetags;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTouch;
+import hatetags.com.hatetags.Entitys.Palavra;
+import hatetags.com.hatetags.Entitys.Tweet;
 import hatetags.com.hatetags.Graphics.GraphicFactory;
 import hatetags.com.hatetags.Graphics.MyXAxisValueFormatter;
 import hatetags.com.hatetags.Graphics.MyYAxisValueFormatter;
+import hatetags.com.hatetags.WebServices.ClienteWebService;
+import hatetags.com.hatetags.WebServices.ClienteWebServiceWords;
 
 public class Graphics_activity extends AppCompatActivity {
 
@@ -64,9 +58,6 @@ public class Graphics_activity extends AppCompatActivity {
     @BindView(R.id.fab_lineChart)
     protected com.github.clans.fab.FloatingActionButton fab_lineChart;
 
-    @BindView(R.id.fab_pieChart)
-    protected com.github.clans.fab.FloatingActionButton fab_pieChart;
-
     @BindView(R.id.fab_graphics)
     protected com.github.clans.fab.FloatingActionMenu fab;
 
@@ -75,6 +66,7 @@ public class Graphics_activity extends AppCompatActivity {
     private String[] labels;
 
     private GraphicFactory graphicFactory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,17 +83,37 @@ public class Graphics_activity extends AppCompatActivity {
         graphicFactory = new GraphicFactory();
 
         ArrayList<String> Testelabels = new ArrayList<>();
-        Testelabels.add("Label 1");
-        Testelabels.add("Label 2");
-        Testelabels.add("Label 3");
-        Testelabels.add("Label 4");
-        Testelabels.add("Label 5");
+        Testelabels.add("Nojo");
+        Testelabels.add("Nojento");
+        Testelabels.add("Merece Morrer");
+        Testelabels.add("Devia Morrer");
 
         setData(data);
         setLabels(Testelabels);
 
+        showLineChart();
+    }
 
+    public List<Palavra> getTrendingWords(){
 
+        Gson gson = new Gson();
+
+        String retorno;
+
+        try {
+
+            retorno = new ClienteWebServiceWords().execute().get();
+
+            Type type = new TypeToken<List<Palavra>>(){}.getType();
+
+            List<Palavra> wordsList = gson.fromJson(retorno, type);
+
+            return wordsList;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @OnClick(R.id.fab_lineChart)
@@ -111,6 +123,7 @@ public class Graphics_activity extends AppCompatActivity {
 
         XAxis xAxis = chartLine.getXAxis();
         xAxis.setValueFormatter(new MyXAxisValueFormatter(labels));
+        xAxis.setPosition(XAxis.XAxisPosition.TOP);
 
         // Evita a duplicação dos meses na linha X
         xAxis.setGranularity(1f);
@@ -162,11 +175,12 @@ public class Graphics_activity extends AppCompatActivity {
         xAxis.setGranularity(1f);
 //        xAxis.setLabelCount(7);     Define quantos labels aparece
         xAxis.setValueFormatter(new MyXAxisValueFormatter(labels));
+        xAxis.setPosition(XAxis.XAxisPosition.TOP_INSIDE);
 
         //Define o eixo Y
         YAxis yAxis = chartBar.getAxisLeft();
 //        yAxis.setLabelCount(7, false); Define quantos labels aparece e o folse impede de forçar
-        yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        yAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         yAxis.setAxisMinimum(0f);
         yAxis.setValueFormatter(new MyYAxisValueFormatter());
 
@@ -203,11 +217,10 @@ public class Graphics_activity extends AppCompatActivity {
     private void setData(ArrayList<Entry> data){
 
         this.data =  new ArrayList<>();
-        this.data.add(new Entry(1,10));
-        this.data.add(new Entry(2,75));
-        this.data.add(new Entry(3,50));
-        this.data.add(new Entry(3,100));
-        this.data.add(new Entry(4,200));
+        this.data.add(new Entry(1,146));
+        this.data.add(new Entry(2,152));
+        this.data.add(new Entry(3,289));
+        this.data.add(new Entry(4,144));
 
     }
 
